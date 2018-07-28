@@ -1,0 +1,25 @@
+{
+  "name": "web-storage-object",
+  "version": "1.0.0",
+  "description": "API providing 2 way binding of JavaScript objects to browser LocalStorage",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/capJavert/web-storage-object.git"
+  },
+  "keywords": [
+    "webstorage",
+    "localstorage",
+    "sessionstorage",
+    "persistence"
+  ],
+  "author": "Ante Baric (capJavert)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/capJavert/web-storage-object/issues"
+  },
+  "homepage": "https://github.com/capJavert/web-storage-object#readme"
+}
