@@ -1,6 +1,6 @@
 /**
  * API providing 2 way binding of JavaScript objects to browser LocalStorage
- * 
+ *
  * @type {Object}
  */
 var LocalStorageObject = {
@@ -9,9 +9,8 @@ var LocalStorageObject = {
     if((overwrite && overwrite === true) || handler._fetch() === null) {
       handler._persist(target);
     }
-    var proxy = new Proxy(target, handler);
 
-    return proxy
+    return new Proxy(target, handler);
   },
   _handler: function(key) {
     return {
@@ -29,13 +28,9 @@ var LocalStorageObject = {
        * @return {any}
        */
       get: function (target, key) {
-        var temp = this._fetch();
+        target = this._fetch();
 
-        if(temp) {
-          return temp[key] || target[key] || null;
-        } else {
-          return target[key] || null;
-        }
+        return target[key] || null;
       },
       /**
        * Setter for binded localStorage object properties
@@ -45,7 +40,9 @@ var LocalStorageObject = {
        * @return {any}
        */
       set: function (target, key, value) {
+        var target = this._fetch()
         target[key] = value;
+
         this._persist(target);
       },
       /**
