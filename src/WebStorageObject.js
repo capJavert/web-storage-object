@@ -11,15 +11,25 @@ var WebStorageEnum = require('./WebStorageEnum');
  * @return {Proxy} Proxy object containing WebStorageObject handler
  */
 var WebStorageObject = function(type, target, key, overwrite) {
+  if(overwrite == null) { overwrite = true; }
+
   var handler = this._handler(key);
   if(!handler._setStorage(type)) {
     throw "WebStorage type is not valid or supported.";
   }
-  if((overwrite && overwrite === true) || handler._fetch() === null) {
+  if(overwrite === true || handler._fetch() === null) {
     handler._persist(target);
+  } else {
+    target = handler._fetch();
   }
   var proxy = new Proxy(target, handler);
   handler._proxy = proxy;
+
+  if(window) {
+    window.addEventListener('storage', function() {
+      handler._reflect();
+    });
+  }
 
   return proxy;
 }
@@ -123,6 +133,15 @@ WebStorageObject.prototype._handler = function(key) {
       }
 
       return false;
+    },
+    /**
+     * Reflect all values from WebStorage to proxy internal target object
+     */
+    _reflect: function() {
+      var temp = this._fetch();
+      for (var key in temp) {
+        this._proxy[key] = temp[key];
+      }
     }
   }
 }
