@@ -32,7 +32,7 @@ var heroModel = {
     boots: 'Wraps'
   }
 }
-var ogox = new LocalStorageObject(heroModel, 'ogox');
+var ogox = new LocalStorageObject(heroModel, 'ogox')
 ```
 Not if you check localStorage inside dev tools of your browser you will see:
 
@@ -78,7 +78,6 @@ You can use files inside /dist folder or build your own.
 $ git clone https://github.com/capJavert/web-storage-object.git
 $ web-storage-object
 $ npm install
-```
 ```
 Build scripts are:
 ```
