@@ -26,7 +26,7 @@ var heroModel = {
   name: 'Ogox',
   weapon: 'Axe',
   horse: true,
-  armor: [
+  armor: {
     head: 'Steel Helmet',
     body: 'Rags',
     boots: 'Wraps'
