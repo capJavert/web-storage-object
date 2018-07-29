@@ -34,7 +34,7 @@ var heroModel = {
 }
 var ogox = new LocalStorageObject(heroModel, 'ogox')
 ```
-Not if you check localStorage inside dev tools of your browser you will see:
+Now if you check localStorage inside dev tools of your browser you will see:
 
 ![Chrome DevTools showcase](https://i.imgur.com/8A3r8Nl.png "Chrome DevTools")
 
@@ -48,6 +48,12 @@ console.log(ogox)
 console.log(ogox.weapon)
 ```
 As you can see it behaves just as any other object except with help of JavaScript Proxy object changes are saved and fetched from WebStorage.
+
+### Use sessionStorage
+To use sessionStorage call the SessionStorageObject constructor.
+```
+var ogox = new SessionStorageObject(heroModel, 'ogox')
+```
 
 ### Nested objects
 It also works out of the box with nested object properties like:
@@ -71,6 +77,13 @@ ogox.items = [
 ]
 console.log(ogox.items[1]) // prints 'spoon' to console
 ```
+
+### Handling data already written inside browser storage
+Let's say you already have some data for the given key saved to storage and you just want to load that. You can do it like this:
+```
+var ogox = new LocalStorageObject({}, 'ogox', false) // overwrite flag set to false
+```
+If overwrite flag is set to false and no data exists in Storage then in this case constructor would return empty LocalStorageObject object.
 
 ## Build your own
 You can use files inside /dist folder or build your own.

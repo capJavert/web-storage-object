@@ -71,7 +71,7 @@ var WebStorageEnum = require('./WebStorageEnum');
  * @param  {WebStorageEnum} type type indicating  WebStorage API to use
  * @param  {object} target object or array defining object properties
  * @param  {string} key key that will identifiy object inside webStorage
- * @param  {boolean} overwrite set this flag if you wish to overwrite existing key if it exits inside webStorage
+ * @param  {boolean} overwrite Defaults to true, unset this flag to keep existing data if the key already exsits inside webStorage
  * @return {Proxy} Proxy object containing WebStorageObject handler
  */
 var WebStorageObject = function WebStorageObject(type, target, key, overwrite) {
