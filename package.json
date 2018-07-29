@@ -1,10 +1,13 @@
 {
   "name": "web-storage-object",
   "version": "1.0.0",
-  "description": "API providing 2 way binding of JavaScript objects to browser LocalStorage",
-  "main": "index.js",
+  "description": "API providing 2 way binding of JavaScript objects to browser WebStorage",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ es2015 ] ]",
+    "build": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ es2015 ] ] > dist/web-storage-object.js",
+    "build_prod": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ es2015 ] ] | uglifyjs > dist/web-storage-object.min.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +24,12 @@
   "bugs": {
     "url": "https://github.com/capJavert/web-storage-object/issues"
   },
-  "homepage": "https://github.com/capJavert/web-storage-object#readme"
+  "homepage": "https://github.com/capJavert/web-storage-object#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^8.0.0",
+    "browserify": "^16.2.2",
+    "uglify-js": "^3.4.6"
+  }
 }

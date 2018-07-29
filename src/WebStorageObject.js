@@ -1,19 +1,20 @@
-/**
- * API providing 2 way binding of JavaScript objects to browser LocalStorage
- *
- * @type {Object}
- */
+var WebStorageEnum = require('./WebStorageEnum');
 
 /**
- * Constructor for creating an object of LocalStorageObject type
+ * Abstract WebStorageObject type
+ * Used in child LocalStorageObject and SessionStorageObject types
  *
+ * @param  {WebStorageEnum} type type indicating  WebStorage API to use
  * @param  {object} target object or array defining object properties
- * @param  {string} key key that will identifiy object inside localStorage
- * @param  {boolean} overwrite set this flag if you wish to overwrite existing key if it exits inside localStorage
- * @return {Proxy} Proxy object containing LocalStorageObject handler
+ * @param  {string} key key that will identifiy object inside webStorage
+ * @param  {boolean} overwrite set this flag if you wish to overwrite existing key if it exits inside webStorage
+ * @return {Proxy} Proxy object containing WebStorageObject handler
  */
-var LocalStorageObject = function(target, key, overwrite) {
+var WebStorageObject = function(type, target, key, overwrite) {
   var handler = this._handler(key);
+  if(!handler._setStorage(type)) {
+    throw "WebStorage type is not valid or supported.";
+  }
   if((overwrite && overwrite === true) || handler._fetch() === null) {
     handler._persist(target);
   }
@@ -22,23 +23,29 @@ var LocalStorageObject = function(target, key, overwrite) {
 
   return proxy;
 }
-LocalStorageObject.prototype._handler = function(key) {
+WebStorageObject.prototype._handler = function(key) {
   return {
     /**
-     * Unique identifier for object inside localStorage
+     * Unique identifier for object inside webStorage
      *
      * @type {string}
      */
     _id: key || this._uuid(),
     /**
      * Reference to handlers Proxy object
-     * Always set if LocalStorageObject is created through constructor function
+     * Always set if WebStorageObject is created through constructor function
      *
      * @type {Proxy}
      */
     _proxy: null,
     /**
-     * Getter for binded localStorage object properties
+     * Reference to selected WebStorage type
+     *
+     * @type {localStorage|sessionStorage}
+     */
+    _storage: null,
+    /**
+     * Getter for binded webStorage object properties
      *
      * @param  {object} target
      * @param  {string|number} key
@@ -47,13 +54,13 @@ LocalStorageObject.prototype._handler = function(key) {
     get: function (target, key) {
       target = this._fetch();
       if(typeof target[key] === 'object') {
-        return new LocalStorageProperty(target[key], key, this._proxy);
+        return new WebStorageProperty(target[key], key, this._proxy);
       } else {
         return target[key] || null;
       }
     },
     /**
-     * Setter for binded localStorage object properties
+     * Setter for binded webStorage object properties
      *
      * @param  {object} target
      * @param  {string|number} key
@@ -66,7 +73,7 @@ LocalStorageObject.prototype._handler = function(key) {
       this._persist(target);
     },
     /**
-     * Used to generate random object identifier inside localStorage
+     * Used to generate random object identifier inside webStorage
      *
      * @return {string}
      */
@@ -77,53 +84,71 @@ LocalStorageObject.prototype._handler = function(key) {
       });
     },
     /**
-     * Save data to localStorage as JSON string
+     * Save data to webStorage as JSON string
      *
      * @param {object} value
      */
     _persist: function(value) {
       if(value) {
-        localStorage.setItem(this._id, JSON.stringify(value));
+        this._storage.setItem(this._id, JSON.stringify(value));
       }
     },
     /**
-     * Get data from localStorage as object
+     * Get data from webStorage as object
      *
      * @return {object}
      */
     _fetch: function() {
-      var temp = localStorage.getItem(this._id);
+      var temp = this._storage.getItem(this._id);
       return temp ? JSON.parse(temp) : null;
+    },
+    /**
+     * Abstract webStorage setter
+     *
+     * @type {localStorage|sessionStorage}
+     * @return {boolean} Returns false if WebStorage type is not valid or supported
+     */
+    _setStorage: function(type) {
+      switch(type) {
+        case WebStorageEnum.localStorage:
+          this._storage = localStorage;
+          return true;
+        case WebStorageEnum.sessionStorage:
+          this._storage = sessionStorage;
+          return true;
+      }
+
+      return false;
     }
   }
 }
 
 /**
- * Constructor for creating an object of LocalStorageProperty type
+ * Constructor for creating an object of WebStorageProperty type
  *
  * @param  {object} target object or array defining object properties
  * @param  {string} key key that will identifiy object inside his parent
  * @param  {Proxy} parent Proxy object of a parent object
- * @return {Proxy} Proxy object containing LocalStorageProperty handler
+ * @return {Proxy} Proxy object containing WebStorageProperty handler
  */
-var LocalStorageProperty = function(target, key, parent) {
+var WebStorageProperty = function(target, key, parent) {
   var handler = this._handler(key, parent);
   var proxy = new Proxy(target, handler);
   handler._proxy = proxy;
 
   return proxy;
 }
-LocalStorageProperty.prototype._handler = function(key, parent) {
+WebStorageProperty.prototype._handler = function(key, parent) {
   return {
     /**
-     * Unique identifier for property inside localStorage
+     * Unique identifier for property inside webStorage
      *
      * @type {string}
      */
     _id: key,
     /**
      * Reference to handlers Proxy object
-     * Always set if LocalStorageProperty is created through constructor function
+     * Always set if WebStorageProperty is created through constructor function
      *
      * @type {Proxy}
      */
@@ -135,7 +160,7 @@ LocalStorageProperty.prototype._handler = function(key, parent) {
      */
     _parent: parent,
     /**
-     * Getter for binded localStorage property properties
+     * Getter for binded webStorage property properties
      *
      * @param  {object} target
      * @param  {string|number} key
@@ -143,13 +168,13 @@ LocalStorageProperty.prototype._handler = function(key, parent) {
      */
     get: function (target, key) {
       if(typeof target[key] === 'object') {
-        return new LocalStorageProperty(target[key], key, this._proxy);
+        return new WebStorageProperty(target[key], key, this._proxy);
       } else {
         return target[key] || null;
       }
     },
     /**
-     * Setter for binded localStorage property properties
+     * Setter for binded webStorage property properties
      *
      * @param  {object} target
      * @param  {string|number} key
@@ -161,3 +186,5 @@ LocalStorageProperty.prototype._handler = function(key, parent) {
     }
   }
 }
+
+module.exports = WebStorageObject;
