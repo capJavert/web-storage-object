@@ -67,10 +67,11 @@ WebStorageObject.prototype._handler = function(key) {
      * @return {any}
      */
     set: function (target, key, value) {
-      var target = this._fetch();
       target[key] = value;
+      var temp = this._fetch();
+      temp[key] = value;
 
-      this._persist(target);
+      return this._persist(temp);
     },
     /**
      * Used to generate random object identifier inside webStorage
@@ -91,6 +92,9 @@ WebStorageObject.prototype._handler = function(key) {
     _persist: function(value) {
       if(value) {
         this._storage.setItem(this._id, JSON.stringify(value));
+        return true;
+      } else {
+        return false;
       }
     },
     /**
@@ -183,6 +187,8 @@ WebStorageProperty.prototype._handler = function(key, parent) {
     set: function (target, key, value) {
       target[key] = value;
       this._parent[this._id] = target;
+
+      return true;
     }
   }
 }
