@@ -1,6 +1,6 @@
 {
   "name": "web-storage-object",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "API providing 2 way binding of JavaScript objects to browser WebStorage",
   "main": "src/index.js",
   "scripts": {
