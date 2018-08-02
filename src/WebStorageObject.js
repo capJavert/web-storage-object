@@ -74,7 +74,7 @@ WebStorageObject.prototype._handler = function(key) {
      *
      * @param  {object} target
      * @param  {string|number} key
-     * @return {any}
+     * @return {boolean}
      */
     set: function (target, key, value) {
       target[key] = value;
@@ -82,6 +82,21 @@ WebStorageObject.prototype._handler = function(key) {
       temp[key] = value;
 
       return this._persist(temp);
+    },
+    /**
+     * Delete operator handler
+     *
+     * @param  {object} target
+     * @param  {string|number} key
+     * @return {boolean}
+     */
+    deleteProperty: function(target, key) {
+      if (key in target) {
+        delete target[key];
+        return this._persist(target);
+      } else {
+        return false;
+      }
     },
     /**
      * Used to generate random object identifier inside webStorage
@@ -201,14 +216,31 @@ WebStorageProperty.prototype._handler = function(key, parent) {
      *
      * @param  {object} target
      * @param  {string|number} key
-     * @return {any}
+     * @return {boolean}
      */
     set: function (target, key, value) {
       target[key] = value;
       this._parent[this._id] = target;
 
       return true;
-    }
+    },
+    /**
+     * Delete operator handler
+     *
+     * @param  {object} target
+     * @param  {string|number} key
+     * @return {boolean}
+     */
+     deleteProperty: function(target, key) {
+       if (key in target) {
+         delete target[key];
+         this._parent[this._id] = target;
+
+         return true;
+       } else {
+         return false;
+       }
+     }
   }
 }
 
