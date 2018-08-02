@@ -62,7 +62,7 @@ ogox.armor.body = 'Heavy Armor' // updates property inside browser storage
 ```
 
 ### Just like any JavaScript object
-You can define new attributes just like with any JS object:
+You can define new properties just like with any JS object:
 ```
 ogox.armor.hands = 'Shoulder Plates'
 ogox.level = 42
@@ -85,6 +85,13 @@ var ogox = new LocalStorageObject({}, 'ogox', false) // overwrite flag set to fa
 ```
 If overwrite flag is set to false and no data exists in Storage then in this case constructor would return empty LocalStorageObject object.
 
+### Delete properties
+You can use delete operator to delete properties, this will delete property and sync webStorage:
+```
+delete ogox.armor.hands
+delete ogox.level
+```
+
 ## Build your own
 You can use files inside /dist folder or build your own.
 ```
@@ -106,5 +113,5 @@ $ npm run build_prod
 * ~~Array support~~ - Solved by adding nested object support, JS arrays are objects with special behaviour and Proxy handles them the same way
 * ~~Nested Array support~~ - Solved with previous point
 * ~~abstract to WebStorageObject and provide SessionStorageObject and LocalStorageObject~~
-* Add support for delete operator
-* Add support for Object.hasOwnProperty
+* ~~Add support for delete operator~~
+* ~~Add support for Object.hasOwnProperty~~
