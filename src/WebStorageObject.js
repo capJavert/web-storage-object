@@ -66,7 +66,7 @@ WebStorageObject.prototype._handler = function(key) {
       if(typeof target[key] === 'object') {
         return new WebStorageProperty(target[key], key, this._proxy);
       } else {
-        return target[key] || null;
+        return target.hasOwnProperty(key) ? target[key] : null;
       }
     },
     /**
@@ -208,7 +208,7 @@ WebStorageProperty.prototype._handler = function(key, parent) {
       if(typeof target[key] === 'object') {
         return new WebStorageProperty(target[key], key, this._proxy);
       } else {
-        return target[key] || null;
+        return target.hasOwnProperty(key) ? target[key] : null;
       }
     },
     /**
