@@ -7,9 +7,9 @@
   "jsdelivr": "dist/web-storage-object.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ es2015 ] ]",
-    "build": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ es2015 ] ] > dist/web-storage-object.js",
-    "build_prod": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ es2015 ] ] | uglifyjs > dist/web-storage-object.min.js"
+    "compile": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ @babel/preset-env ] ]",
+    "build": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ @babel/preset-env ] ] > dist/web-storage-object.js",
+    "build_prod": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ @babel/preset-env ] ] | uglifyjs > dist/web-storage-object.min.js"
   },
   "repository": {
     "type": "git",
@@ -28,11 +28,10 @@
   },
   "homepage": "https://github.com/capJavert/web-storage-object#readme",
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-preset-es2015": "^6.24.1",
-    "babelify": "^8.0.0",
-    "browserify": "^16.2.2",
-    "uglify-js": "^3.4.6",
-    "cached-path-relative": "^1.0.2"
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "babelify": "^10.0.0",
+    "browserify": "^16.2.3",
+    "uglify-js": "^3.4.9"
   }
 }
