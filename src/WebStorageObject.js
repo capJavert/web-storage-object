@@ -158,6 +158,14 @@ WebStorageObject.prototype._handler = function(key) {
         this._proxy[key] = temp[key];
       }
     }
+
+    toJSON(): function() {
+      return this._storage.getItem(this._id) || '{}';
+    }
+
+    toPlain(): function() {
+      return this._fetch();
+    }
   }
 }
 
