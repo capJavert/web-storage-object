@@ -101,11 +101,11 @@ $ npm install
 ```
 Build scripts are:
 ```
-$ npm run build
+$ npm run build:nouglify
 ```
 or minified version:
 ```
-$ npm run build_prod
+$ npm run build
 ```
 
 ## Supports:
