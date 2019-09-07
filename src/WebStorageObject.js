@@ -62,11 +62,25 @@ WebStorageObject.prototype._handler = function(key) {
      * @return {any}
      */
     get: function (target, key) {
-      target = this._fetch();
-      if(typeof target[key] === 'object') {
-        return new WebStorageProperty(target[key], key, this._proxy);
-      } else {
-        return target.hasOwnProperty(key) ? target[key] : null;
+      switch (key) {
+        case 'toJSON':
+          return this.toJSON.bind(this)
+        case 'toPlain':
+          return this.toPlain.bind(this)
+        case 'toString':
+          return this.toString.bind(this)
+        case 'toLocaleString':
+          return this.toLocaleString.bind(this)
+        case 'hasOwnProperty':
+          target = this._fetch();
+          return target.hasOwnProperty
+        default:
+          target = this._fetch();
+          if(typeof target[key] === 'object') {
+            return new WebStorageProperty(target[key], key, this._proxy);
+          } else {
+            return target.hasOwnProperty(key) ? target[key] : null;
+          }
       }
     },
     /**
@@ -157,13 +171,20 @@ WebStorageObject.prototype._handler = function(key) {
       for (var key in temp) {
         this._proxy[key] = temp[key];
       }
-    }
-
-    toJSON(): function() {
+    },
+    /**
+     * Return plain JSON string
+     *
+     * @return {string} [description]
+     */
+    toJSON: function() {
       return this._storage.getItem(this._id) || '{}';
-    }
-
-    toPlain(): function() {
+    },
+    /**
+     * Return plain object (without nested Proxys)
+     * @return {object}
+     */
+    toPlain: function() {
       return this._fetch();
     }
   }
