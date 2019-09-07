@@ -8,8 +8,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ @babel/preset-env ] ]",
-    "build": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ @babel/preset-env ] ] > dist/web-storage-object.js",
-    "build_prod": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ @babel/preset-env ] ] | uglifyjs > dist/web-storage-object.min.js"
+    "build:nouglify": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ @babel/preset-env ] ] > dist/web-storage-object.js",
+    "build": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ @babel/preset-env ] ] | uglifyjs > dist/web-storage-object.min.js"
   },
   "repository": {
     "type": "git",
