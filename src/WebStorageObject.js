@@ -68,9 +68,9 @@ WebStorageObject.prototype._handler = function(key) {
         case 'toPlain':
           return this.toPlain.bind(this)
         case 'toString':
-          return this.toString.bind(this)
+          return target.toString
         case 'toLocaleString':
-          return this.toLocaleString.bind(this)
+          return target.toLocaleString
         case 'hasOwnProperty':
           target = this._fetch();
           return target.hasOwnProperty
@@ -244,9 +244,9 @@ WebStorageProperty.prototype._handler = function(key, parent) {
             return target
           }
         case 'toString':
-          return this.toString.bind(this)
+          return target.toString
         case 'toLocaleString':
-          return this.toLocaleString.bind(this)
+          return target.toLocaleString
         case 'hasOwnProperty':
           return target.hasOwnProperty
         default:
