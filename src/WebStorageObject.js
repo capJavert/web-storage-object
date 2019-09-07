@@ -234,10 +234,27 @@ WebStorageProperty.prototype._handler = function(key, parent) {
      * @return {any}
      */
     get: function (target, key) {
-      if(typeof target[key] === 'object') {
-        return new WebStorageProperty(target[key], key, this._proxy);
-      } else {
-        return target.hasOwnProperty(key) ? target[key] : null;
+      switch (key) {
+        case 'toJSON':
+          return function() {
+            return JSON.stringify(target)
+          }
+        case 'toPlain':
+          return function() {
+            return target
+          }
+        case 'toString':
+          return this.toString.bind(this)
+        case 'toLocaleString':
+          return this.toLocaleString.bind(this)
+        case 'hasOwnProperty':
+          return target.hasOwnProperty
+        default:
+          if(typeof target[key] === 'object') {
+            return new WebStorageProperty(target[key], key, this._proxy);
+          } else {
+            return target.hasOwnProperty(key) ? target[key] : null;
+          }
       }
     },
     /**
@@ -269,6 +286,21 @@ WebStorageProperty.prototype._handler = function(key, parent) {
        } else {
          return false;
        }
+     },
+     /**
+      * Return plain JSON string
+      *
+      * @return {string} [description]
+      */
+     toJSON: function() {
+       return JSON.stringify(this)
+     },
+     /**
+      * Return plain object (without nested Proxys)
+      * @return {object}
+      */
+     toPlain: function() {
+       return this
      }
   }
 }
