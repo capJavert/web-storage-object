@@ -10,8 +10,9 @@
     "compile": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ @babel/preset-env ] ]",
     "build:nouglify": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ @babel/preset-env ] ] > dist/web-storage-object.js",
     "build": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ @babel/preset-env ] ] | uglifyjs > dist/web-storage-object.min.js",
-    "lint": "eslint --ext js src/",
-    "lint:fix": "eslint --ext js src/ --fix"
+    "lint": "eslint --ext js src/ --max-warnings 0",
+    "lint:fix": "eslint --ext js src/ --fix",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -39,10 +40,5 @@
     "eslint-plugin-import": "^2.24.2",
     "husky": "^7.0.0",
     "uglify-js": "^3.4.9"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint -- --max-warnings=0"
-    }
   }
 }
