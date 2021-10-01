@@ -1,5 +1,5 @@
-var WebStorageObject = require('./WebStorageObject');
-var WebStorageEnum = require('./WebStorageEnum');
+const WebStorageObject = require('./WebStorageObject');
+const WebStorageEnum = require('./WebStorageEnum');
 
 /**
  * SessionStorageObject
@@ -11,13 +11,13 @@ var WebStorageEnum = require('./WebStorageEnum');
  * @param  {boolean} overwrite set this flag if you wish to overwrite existing key if it exits inside webStorage
  * @return {Proxy} Proxy object containing SessionStorageObject handler
  */
-var SessionStorageObject = function(target, key, overwrite) {
+const SessionStorageObject = function (target, key, overwrite) {
   return new WebStorageObject(
     WebStorageEnum.sessionStorage,
     target,
     key,
-    overwrite
+    overwrite,
   );
-}
+};
 
 module.exports = SessionStorageObject;
