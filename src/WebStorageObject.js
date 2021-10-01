@@ -7,15 +7,14 @@ const WebStorageEnum = require('./WebStorageEnum');
  * @param  {WebStorageEnum} type type indicating  WebStorage API to use
  * @param  {object} target object or array defining object properties
  * @param  {string} key key that will identifiy object inside webStorage
- * @param  {boolean} overwrite Defaults to true, unset this flag to keep existing data if the key already exsits inside webStorage
+ * @param  {boolean} overwrite Defaults to true, unset this flag to keep
+ *  existing data if the key already exists inside webStorage
  * @return {Proxy} Proxy object containing WebStorageObject handler
  */
-const WebStorageObject = function (type, target, key, overwrite) {
-  if (overwrite == null) { overwrite = true; }
-
+const WebStorageObject = function (type, target, key, overwrite = true) {
   const handler = this._handler(key);
   if (!handler._setStorage(type)) {
-    throw 'WebStorage type is not valid or supported.';
+    throw new Error('WebStorage type is not valid or supported.');
   }
   if (overwrite === true || handler._fetch() === null) {
     handler._persist(target);
@@ -79,7 +78,7 @@ WebStorageObject.prototype._handler = function (key) {
           if (typeof target[key] === 'object') {
             return new WebStorageProperty(target[key], key, this._proxy);
           }
-          return target.hasOwnProperty(key) ? target[key] : null;
+          return Object.prototype.hasOwnProperty.call(target, key) ? target[key] : null;
       }
     },
     /**
@@ -157,9 +156,9 @@ WebStorageObject.prototype._handler = function (key) {
         case WebStorageEnum.sessionStorage:
           this._storage = sessionStorage;
           return true;
+        default:
+          return false;
       }
-
-      return false;
     },
     /**
      * Reflect all values from WebStorage to proxy internal target object
@@ -196,7 +195,7 @@ WebStorageObject.prototype._handler = function (key) {
  * @param  {Proxy} parent Proxy object of a parent object
  * @return {Proxy} Proxy object containing WebStorageProperty handler
  */
-var WebStorageProperty = function (target, key, parent) {
+let WebStorageProperty = function (target, key, parent) {
   const handler = this._handler(key, parent);
   const proxy = new Proxy(target, handler);
   handler._proxy = proxy;
@@ -251,7 +250,7 @@ WebStorageProperty.prototype._handler = function (key, parent) {
           if (typeof target[key] === 'object') {
             return new WebStorageProperty(target[key], key, this._proxy);
           }
-          return target.hasOwnProperty(key) ? target[key] : null;
+          return Object.prototype.hasOwnProperty.call(target, key) ? target[key] : null;
       }
     },
     /**
