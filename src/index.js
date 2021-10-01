@@ -8,10 +8,10 @@
  *
  */
 
-var LocalStorageObject = require('./LocalStorageObject');
-var SessionStorageObject = require('./SessionStorageObject');
+const LocalStorageObject = require('./LocalStorageObject');
+const SessionStorageObject = require('./SessionStorageObject');
 
 module.exports = {
-  LocalStorageObject: LocalStorageObject,
-  SessionStorageObject: SessionStorageObject
-}
+  LocalStorageObject,
+  SessionStorageObject,
+};
