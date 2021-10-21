@@ -9,7 +9,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ @babel/preset-env ] ]",
     "build:nouglify": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ @babel/preset-env ] ] > dist/web-storage-object.js",
-    "build": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ @babel/preset-env ] ] | uglifyjs > dist/web-storage-object.min.js"
+    "build": "browserify src/index.js --s webStorageObject -t [ babelify --presets [ @babel/preset-env ] ] | uglifyjs > dist/web-storage-object.min.js",
+    "lint": "eslint --ext js src/ --max-warnings 0",
+    "lint:fix": "eslint --ext .js src/ --fix",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -32,6 +35,10 @@
     "@babel/preset-env": "^7.3.1",
     "babelify": "^10.0.0",
     "browserify": "^16.2.3",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.2",
+    "husky": "^7.0.0",
     "uglify-js": "^3.4.9"
   }
 }
